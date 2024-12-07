@@ -6,9 +6,9 @@ import { Asistencia } from './entities/asistencia.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Asistencia]), // Registrar la entidad Asistencia con TypeORM
+    TypeOrmModule.forFeature([Asistencia]),
   ],
-  controllers: [AsistenciaController], // Registrar el controlador
-  providers: [AsistenciaService], // Registrar el servicio
+  controllers: [AsistenciaController],
+  providers: [AsistenciaService],
 })
 export class AsistenciaModule {}

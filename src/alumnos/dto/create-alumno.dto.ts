@@ -4,11 +4,17 @@ import {
     MaxLength,
     MinLength,
     IsNotEmpty,
-    IsEmail
+    IsEmail,
+    IsOptional,
+    IsEnum,
 } from 'class-validator';
 
-export class CrearAlumno {
+export enum Rol {
+    USUARIO_PRO = 'Usuario Pro',
+    USUARIO_GRATUITO = 'Usuario Gratuito',
+}
 
+export class CrearAlumno {
     @IsString()
     @MaxLength(255)
     @MinLength(8)
@@ -30,7 +36,7 @@ export class CrearAlumno {
     @IsNumber()
     @IsNotEmpty()
     Matricula: number;
-    
+
     @IsString()
     @MaxLength(30)
     @MinLength(10)
@@ -39,11 +45,15 @@ export class CrearAlumno {
     Correo: string;
 
     @IsString()
-    @IsNotEmpty()   
+    @IsNotEmpty()
     Fotografia: string;
 
     @IsString()
     @MaxLength(255)
     @IsNotEmpty()
     HuellaDigital: string;
+
+    @IsEnum(Rol)
+    @IsOptional()
+    Rol?: Rol;
 }

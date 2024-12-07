@@ -5,11 +5,16 @@ import {
     MinLength,
     IsNotEmpty,
     IsEmail,
-    IsOptional
+    IsOptional,
+    IsEnum,
 } from 'class-validator';
 
-export class ActualizarAlumnos {
+export enum Rol {
+    USUARIO_PRO = 'Usuario Pro',
+    USUARIO_GRATUITO = 'Usuario Gratuito',
+}
 
+export class ActualizarAlumnos {
     @IsOptional()
     @IsString()
     @MaxLength(255)
@@ -31,7 +36,7 @@ export class ActualizarAlumnos {
     @IsOptional()
     @IsNumber()
     Matricula?: number;
-    
+
     @IsOptional()
     @IsString()
     @MaxLength(30)
@@ -47,4 +52,8 @@ export class ActualizarAlumnos {
     @IsString()
     @MaxLength(255)
     HuellaDigital?: string;
+
+    @IsOptional()
+    @IsEnum(Rol)
+    Rol?: Rol;
 }

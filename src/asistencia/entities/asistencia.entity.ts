@@ -17,6 +17,6 @@ export class Asistencia {
   @Column()
   correo: string;
 
-  @Column({ default: 'Inasistencia' })
-  estado: string;
+  @Column({ type: 'enum', enum: ['Asistencia', 'Inasistencia'], default: 'Inasistencia' })
+  estado: 'Asistencia' | 'Inasistencia';
 }

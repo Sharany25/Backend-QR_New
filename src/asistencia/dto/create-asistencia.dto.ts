@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsEmail, IsDateString } from 'class-validator';
+import { IsString, IsNotEmpty, IsEmail, IsDateString, IsBoolean, IsOptional } from 'class-validator';
 
 export class CreateAsistenciaDto {
   @IsString()
@@ -16,4 +16,8 @@ export class CreateAsistenciaDto {
   @IsEmail()
   @IsNotEmpty()
   correo: string;
+
+  @IsBoolean()
+  @IsOptional()
+  asistio?: boolean;
 }

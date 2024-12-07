@@ -8,6 +8,8 @@ export class AsistenciaController {
 
   @Post('registrar')
   async registrar(@Body() body: CreateAsistenciaDto) {
-    return this.asistenciaService.registrarAsistencia(body);
+
+    const resultado = await this.asistenciaService.registrarAsistencia(body);
+    return { mensaje: resultado ? 'Asistencia registrada' : 'No se pudo registrar la asistencia' };
   }
 }

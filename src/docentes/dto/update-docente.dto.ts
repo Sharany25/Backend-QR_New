@@ -18,7 +18,7 @@ export class ActualizarDocente {
     @IsOptional()
     @IsString()
     @IsEmail()
-    @MaxLength(50) // Incremento el límite para correos más largos.
+    @MaxLength(50)
     Email?: string;
 
     @IsOptional()
