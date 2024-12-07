@@ -1,68 +1,47 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Docente } from './entities/docente.entity';
 import { CrearDocente } from './dto/create-docente.dto';
 import { ActualizarDocente } from './dto/update-docente.dto';
-import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class DocenteService {
-  private docentes = []; // Aquí podrías usar una base de datos
+  constructor(
+    @InjectRepository(Docente)
+    private readonly docenteRepository: Repository<Docente>,
+  ) {}
 
-  // Crear un nuevo docente
-  async crearDocente(crearDocenteDto: CrearDocente) {
-    const salt = await bcrypt.genSalt(); // Generar un salt
-    const hashPassword = await bcrypt.hash(crearDocenteDto.Password, salt); // Encriptar la contraseña
-
-    const nuevoDocente = { 
-      id: Date.now().toString(), 
-      ...crearDocenteDto, 
-      Password: hashPassword // Guardar la contraseña encriptada
-    };
-    
-    this.docentes.push(nuevoDocente);
-    return nuevoDocente;
+  async crearDocente(crearDocenteDto: CrearDocente): Promise<Docente> {
+    const nuevoDocente = this.docenteRepository.create(crearDocenteDto);
+    return this.docenteRepository.save(nuevoDocente);
   }
 
-  // Obtener todos los docentes
-  obtenerDocentes() {
-    return this.docentes;
+  async obtenerDocentes(): Promise<Docente[]> {
+    return this.docenteRepository.find();
   }
 
-  // Obtener un docente por ID
-  obtenerDocente(id: string) {
-    const docente = this.docentes.find(docente => docente.id === id);
+  async obtenerDocente(id: number): Promise<Docente> {
+    const docente = await this.docenteRepository.findOne({ where: { id } });
     if (!docente) {
       throw new NotFoundException(`Docente con ID ${id} no encontrado`);
     }
     return docente;
   }
 
-  // Actualizar un docente
-  async actualizarDocente(id: string, actualizarDocenteDto: ActualizarDocente) {
-    const docenteIndex = this.docentes.findIndex(docente => docente.id === id);
-    if (docenteIndex === -1) {
-      throw new NotFoundException(`Docente con ID ${id} no encontrado`);
-    }
-
-    // Si se proporciona una nueva contraseña, encriptarla
-    if (actualizarDocenteDto.Password) {
-      const salt = await bcrypt.genSalt();
-      const hashPassword = await bcrypt.hash(actualizarDocenteDto.Password, salt);
-      actualizarDocenteDto.Password = hashPassword; // Reemplazar la contraseña con la encriptada
-    }
-
-    this.docentes[docenteIndex] = {
-      ...this.docentes[docenteIndex],
-      ...actualizarDocenteDto,
-    };
-    return this.docentes[docenteIndex];
+  async actualizarDocente(
+    id: number,
+    actualizarDocenteDto: ActualizarDocente,
+  ): Promise<Docente> {
+    const docente = await this.obtenerDocente(id);
+    Object.assign(docente, actualizarDocenteDto);
+    return this.docenteRepository.save(docente);
   }
 
-  // Eliminar un docente
-  eliminarDocente(id: string) {
-    const docenteIndex = this.docentes.findIndex(docente => docente.id === id);
-    if (docenteIndex === -1) {
+  async eliminarDocente(id: number): Promise<void> {
+    const result = await this.docenteRepository.delete(id);
+    if (result.affected === 0) {
       throw new NotFoundException(`Docente con ID ${id} no encontrado`);
     }
-    return this.docentes.splice(docenteIndex, 1);
   }
 }

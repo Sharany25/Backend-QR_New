@@ -5,31 +5,41 @@ import {
     MinLength,
     IsOptional,
     IsEmail,
+    Matches,
 } from 'class-validator';
 
 export class ActualizarDocente {
-
     @IsOptional()
     @IsString()
-    @MaxLength(255)
     @MinLength(3)
+    @MaxLength(255)
     NombreDocente?: string;
 
     @IsOptional()
     @IsString()
-    @MaxLength(20)
     @IsEmail()
+    @MaxLength(50) // Incremento el límite para correos más largos.
     Email?: string;
 
     @IsOptional()
     @IsString()
-    @MaxLength(255)
     @MinLength(8)
+    @MaxLength(255)
+    @Matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/, {
+        message:
+            'La contraseña debe tener al menos una letra, un número y un mínimo de 8 caracteres.',
+    })
     Password?: string;
 
     @IsOptional()
     @IsString()
-    @MaxLength(10)
     @MinLength(5)
+    @MaxLength(10)
     Grupo?: string;
+
+    @IsOptional()
+    @IsString()
+    @MinLength(3)
+    @MaxLength(100)
+    Materia?: string;
 }
