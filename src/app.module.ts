@@ -13,13 +13,13 @@ import { DocenteModule } from './docentes/docentes.module';
   imports: [
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'mysql.railway.internal',
+      host: 'localhost',
       port: 3306,
       username: 'root',
-      password: 'NJoKVHnJNKQqSPBnwHUNwoOnWZkuwmmG',
-      database: 'railway',
+      password: '',
+      database: 'accesoqr',
       entities: [ Alumno, Asistencia, Docente ],
-      //synchronize: true,
+      synchronize: true,
       }),
       AlumnosModule,
       AsistenciaModule,
