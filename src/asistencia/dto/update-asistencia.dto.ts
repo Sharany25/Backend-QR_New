@@ -1,4 +1,11 @@
-import { IsString, IsOptional, IsEmail, IsDateString, IsBoolean } from 'class-validator';
+import {
+  IsString,
+  IsOptional,
+  IsEmail,
+  IsDateString,
+  IsEnum,
+} from 'class-validator';
+import { EstadoAsistencia } from './create-asistencia.dto'; // Importamos el enumerador del DTO de creación
 
 export class UpdateAsistenciaDto {
   @IsOptional()
@@ -18,6 +25,10 @@ export class UpdateAsistenciaDto {
   correo?: string;
 
   @IsOptional()
-  @IsBoolean()
-  asistio?: boolean;
+  @IsString()
+  clase?: string; // Clase específica para actualizar
+
+  @IsOptional()
+  @IsEnum(EstadoAsistencia)
+  estado?: EstadoAsistencia; // Estado de la asistencia (Asistió, Inasistencia, Retardo)
 }

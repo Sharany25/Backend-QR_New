@@ -1,4 +1,17 @@
-import { IsString, IsNotEmpty, IsEmail, IsDateString, IsBoolean, IsOptional } from 'class-validator';
+import {
+  IsString,
+  IsNotEmpty,
+  IsEmail,
+  IsDateString,
+  IsEnum,
+  IsOptional,
+} from 'class-validator';
+
+export enum EstadoAsistencia {
+  ASISTIO = 'Asistió',
+  INASISTENCIA = 'Inasistencia',
+  RETARDO = 'Retardo',
+}
 
 export class CreateAsistenciaDto {
   @IsString()
@@ -17,7 +30,11 @@ export class CreateAsistenciaDto {
   @IsNotEmpty()
   correo: string;
 
-  @IsBoolean()
+  @IsString()
+  @IsNotEmpty()
+  clase: string; // Clase específica de la asistencia
+
+  @IsEnum(EstadoAsistencia)
   @IsOptional()
-  asistio?: boolean;
+  estado?: EstadoAsistencia; // Estado de la asistencia (Asistió, Inasistencia, Retardo)
 }
